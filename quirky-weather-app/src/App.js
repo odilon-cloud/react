@@ -11,7 +11,9 @@ import { ReactComponent as SplashIcon } from './assets/splash-icon.svg';
 import Logo from './assets/logo.png';
 import ErrorBox from './components/Reusable/ErrorBox';
 import { ALL_DESCRIPTIONS } from './utilities/DateConstants';
-import PersonIcon from '@mui/icons-material/Person';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import XIcon from '@mui/icons-material/X';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import {
     getTodayForecastWeather,
     getWeekForecastWeather,
@@ -26,7 +28,7 @@ function App() {
     const [comparisonTodayForecast, setComparisonTodayForecast] = useState([]); // New state for comparison today forecast
     const [comparisonWeekForecast, setComparisonWeekForecast] = useState(null); // New state for comparison weekly forecast
     const [isLoading, setIsLoading] = useState(false);
-    const [isActive] = useState(false);
+    //const [isActive] = useState(false);
     const [error, setError] = useState(false);
     const [showRain, setShowRain] = useState(false);
 
@@ -257,20 +259,7 @@ function App() {
                             src={Logo}
                         />
                         <UTCDatetime />
-                        <Link
-                            href="https://github.com/Gatete-Bruno"
-                            target="_blank"
-                            underline="none"
-                            sx={{ display: 'flex' }}
-                        >
-                            <PersonIcon
-                                sx={{
-                                    fontSize: { xs: '20px', sm: '22px', md: '26px' },
-                                    color: 'white',
-                                    '&:hover': { color: '#2d95bd' },
-                                }}
-                            />
-                        </Link>
+
                     </Box>
                     <Box
                         display="flex"
@@ -294,7 +283,65 @@ function App() {
                     </Box>
                 )}
             </Grid>
+            <Box
+                component="footer"
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: '2rem',
+                    padding: '1rem',
+                    background: 'rgba(0,0,0,0.18)',
+                    borderRadius: '1rem',
+                }}
+            >
+                <Link
+                    href="https://www.linkedin.com/in/bruno-gatete-454633155/"
+                    target="_blank"
+                    underline="none"
+                    //add space between icons
+                    sx={{ marginRight: '2rem' }}
+                >
+                    <LinkedInIcon
+                        sx={{
+                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
+                            color: 'white',
+                            '&:hover': { color: '#2d95bd' },
+                        }}
+                    />
+                </Link>
+                <Link
+                    href="https://github.com/Gatete-Bruno"
+                    target="_blank"
+                    underline="none"
+                    sx={{ marginRight: '2rem' }}
+                >
+                    <GitHubIcon
+                        sx={{
+                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
+                            color: 'white',
+                            '&:hover': { color: '#2d95bd' },
+                        }}
+                    />
+                </Link>
+                <Link
+                    href="https://github.com/Gatete-Bruno"
+                    target="_blank"
+                    underline="none"
+                    sx={{ marginRight: '2rem' }}
+                >
+                    <XIcon
+                        sx={{
+                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
+                            color: 'white',
+                            '&:hover': { color: '#2d95bd' },
+                        }}
+                    />
+                </Link>
+            </Box>
         </Container>
+
+
     );
 }
 
