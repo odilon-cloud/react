@@ -68,3 +68,34 @@
 .drop:nth-child(17) { left: 80%; animation-delay: 3.3s; }
 .drop:nth-child(18) { left: 85%; animation-delay: 3.5s; }
 .drop:nth-child(19) { left: 90%; animation-delay: 3.7s; }
+
+/* Additional styles for comparison component */
+.weather-box {
+    padding: 16px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.87);
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
+}
+
+.weather-box:hover {
+    transform: scale(1.05);
+}
+
+.weather-box .MuiTypography-h5 {
+    margin-bottom: 8px;
+}
+
+.weather-box .MuiTypography-h6 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.weather-box .MuiSvgIcon-root {
+    margin-right: 8px;
+}

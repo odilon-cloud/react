@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography, SvgIcon } from '@mui/material';
 import Search from './components/Search/Search';
 import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import TodayWeather from './components/TodayWeather/TodayWeather';
@@ -11,13 +11,8 @@ import { ReactComponent as SplashIcon } from './assets/splash-icon.svg';
 import Logo from './assets/logo.png';
 import ErrorBox from './components/Reusable/ErrorBox';
 import { ALL_DESCRIPTIONS } from './utilities/DateConstants';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import XIcon from '@mui/icons-material/X';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import {
-    getTodayForecastWeather,
-    getWeekForecastWeather,
-} from './utilities/DataUtils';
+import { getTodayForecastWeather, getWeekForecastWeather } from './utilities/DataUtils';
+import Comparison from './components/Comparison/Comparison';
 import './App.css';
 
 function App() {
@@ -25,10 +20,9 @@ function App() {
     const [todayForecast, setTodayForecast] = useState([]);
     const [weekForecast, setWeekForecast] = useState(null);
     const [comparisonWeather, setComparisonWeather] = useState(null);
-    const [comparisonTodayForecast, setComparisonTodayForecast] = useState([]); // New state for comparison today forecast
-    const [comparisonWeekForecast, setComparisonWeekForecast] = useState(null); // New state for comparison weekly forecast
+    const [comparisonTodayForecast, setComparisonTodayForecast] = useState([]);
+    const [comparisonWeekForecast, setComparisonWeekForecast] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    //const [isActive] = useState(false);
     const [error, setError] = useState(false);
     const [showRain, setShowRain] = useState(false);
 
@@ -43,18 +37,10 @@ function App() {
         let dt_now = Math.floor(date.getTime() / 1000);
 
         try {
-            const [todayWeatherResponse, weekForecastResponse] =
-                await fetchWeatherData(latitude, longitude);
-            const all_today_forecasts_list = getTodayForecastWeather(
-                weekForecastResponse,
-                currentDate,
-                dt_now
-            );
+            const [todayWeatherResponse, weekForecastResponse] = await fetchWeatherData(latitude, longitude);
+            const all_today_forecasts_list = getTodayForecastWeather(weekForecastResponse, currentDate, dt_now);
 
-            const all_week_forecasts_list = getWeekForecastWeather(
-                weekForecastResponse,
-                ALL_DESCRIPTIONS
-            );
+            const all_week_forecasts_list = getWeekForecastWeather(weekForecastResponse, ALL_DESCRIPTIONS);
 
             setTodayForecast([...all_today_forecasts_list]);
             setTodayWeather({ city: enteredData.label, ...todayWeatherResponse });
@@ -63,8 +49,7 @@ function App() {
                 list: all_week_forecasts_list,
             });
 
-            // Hide the rain animation after a short delay
-            setTimeout(() => setShowRain(false), 1000); // Adjust the delay as needed
+            setTimeout(() => setShowRain(false), 1000);
         } catch (error) {
             setError(true);
         }
@@ -83,18 +68,10 @@ function App() {
         let dt_now = Math.floor(date.getTime() / 1000);
 
         try {
-            const [todayWeatherResponse, weekForecastResponse] =
-                await fetchWeatherData(latitude, longitude);
-            const all_today_forecasts_list = getTodayForecastWeather(
-                weekForecastResponse,
-                currentDate,
-                dt_now
-            );
+            const [todayWeatherResponse, weekForecastResponse] = await fetchWeatherData(latitude, longitude);
+            const all_today_forecasts_list = getTodayForecastWeather(weekForecastResponse, currentDate, dt_now);
 
-            const all_week_forecasts_list = getWeekForecastWeather(
-                weekForecastResponse,
-                ALL_DESCRIPTIONS
-            );
+            const all_week_forecasts_list = getWeekForecastWeather(weekForecastResponse, ALL_DESCRIPTIONS);
 
             setComparisonWeather({ city: enteredData.label, ...todayWeatherResponse });
             setComparisonTodayForecast([...all_today_forecasts_list]);
@@ -103,8 +80,7 @@ function App() {
                 list: all_week_forecasts_list,
             });
 
-            // Hide the rain animation after a short delay
-            setTimeout(() => setShowRain(false), 1000); // Adjust the delay as needed
+            setTimeout(() => setShowRain(false), 1000);
         } catch (error) {
             setError(true);
         }
@@ -128,7 +104,7 @@ function App() {
                 component={SplashIcon}
                 inheritViewBox
                 className="reveal-icon"
-                sx={{padding: '1rem', fontSize: { xs: '100px', sm: '120px', md: '140px' }}}
+                sx={{ padding: '1rem', fontSize: { xs: '100px', sm: '120px', md: '140px' } }}
             />
             <Typography
                 variant="h4"
@@ -144,7 +120,6 @@ function App() {
                     lineHeight: '50px',
                 }}
             >
-
                 Welcome to the Quirky Weather App!
                 <br />
                 Search for the weather and forecast the beautiful clouds
@@ -165,6 +140,7 @@ function App() {
                     <TodayWeather data={comparisonWeather} forecastList={comparisonTodayForecast} />
                     <WeeklyForecast data={comparisonWeekForecast} />
                 </Grid>
+                <Comparison todayWeather={todayWeather} comparisonWeather={comparisonWeather} />
             </React.Fragment>
         );
     } else if (todayWeather && todayForecast && weekForecast) {
@@ -182,11 +158,7 @@ function App() {
 
     if (error) {
         appContent = (
-            <ErrorBox
-                margin="3rem auto"
-                flex="inherit"
-                errorMessage="Something went wrong"
-            />
+            <ErrorBox margin="3rem auto" flex="inherit" errorMessage="Something went wrong" />
         );
     }
 
@@ -234,8 +206,6 @@ function App() {
                     xs: 'none',
                     sm: '0 0 1rem 1rem',
                 },
-
-
             }}
         >
             <Grid container columnSpacing={2}>
@@ -259,7 +229,6 @@ function App() {
                             src={Logo}
                         />
                         <UTCDatetime />
-
                     </Box>
                     <Box
                         display="flex"
@@ -283,65 +252,7 @@ function App() {
                     </Box>
                 )}
             </Grid>
-            <Box
-                component="footer"
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: '2rem',
-                    padding: '1rem',
-                    background: 'rgba(0,0,0,0.18)',
-                    borderRadius: '1rem',
-                }}
-            >
-                <Link
-                    href="https://www.linkedin.com/in/bruno-gatete-454633155/"
-                    target="_blank"
-                    underline="none"
-                    //add space between icons
-                    sx={{ marginRight: '2rem' }}
-                >
-                    <LinkedInIcon
-                        sx={{
-                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
-                            color: 'white',
-                            '&:hover': { color: '#2d95bd' },
-                        }}
-                    />
-                </Link>
-                <Link
-                    href="https://github.com/Gatete-Bruno"
-                    target="_blank"
-                    underline="none"
-                    sx={{ marginRight: '2rem' }}
-                >
-                    <GitHubIcon
-                        sx={{
-                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
-                            color: 'white',
-                            '&:hover': { color: '#2d95bd' },
-                        }}
-                    />
-                </Link>
-                <Link
-                    href="https://github.com/Gatete-Bruno"
-                    target="_blank"
-                    underline="none"
-                    sx={{ marginRight: '2rem' }}
-                >
-                    <XIcon
-                        sx={{
-                            fontSize: { xs: '20px', sm: '22px', md: '26px' },
-                            color: 'white',
-                            '&:hover': { color: '#2d95bd' },
-                        }}
-                    />
-                </Link>
-            </Box>
         </Container>
-
-
     );
 }
 
